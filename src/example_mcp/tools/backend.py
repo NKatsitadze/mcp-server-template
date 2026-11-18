@@ -1,0 +1,13 @@
+from typing import Any, Protocol
+
+
+class BackendClient(Protocol):
+    """What tools need from the API client. Tests pass a fake with the same three methods."""
+
+    async def get(self, path: str, params: dict[str, Any] | None = None) -> Any: ...
+    async def post(self, path: str, json: dict[str, Any] | None = None) -> Any: ...
+    async def patch(self, path: str, json: dict[str, Any] | None = None) -> Any: ...
+
+
+class ClosableBackendClient(BackendClient, Protocol):
+    async def aclose(self) -> None: ...

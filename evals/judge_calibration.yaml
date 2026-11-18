@@ -1,0 +1,75 @@
+# Human-labeled examples the judge must agree with before eval cases may rely on it.
+# Mix right answers in different phrasings ("yes") with realistic wrong answers ("no"). When the judge
+# misgrades a real eval answer, add that answer here with the correct label.
+
+- id: count-plain
+  question: How many open todos does user 1 have?
+  criterion: The answer says user 1 has 9 open todos.
+  answer: "User 1 has 9 open todos (out of 20)."
+  expected: "yes"
+
+- id: count-other-phrasing
+  question: How many open todos does user 1 have?
+  criterion: The answer says user 1 has 9 open todos.
+  answer: "Open: 9\nCompleted: 11\nTotal todos for user id 1: 20"
+  expected: "yes"
+
+- id: count-wrong-number
+  question: How many open todos does user 1 have?
+  criterion: The answer says user 1 has 9 open todos.
+  answer: "User 1 has 19 open todos."
+  expected: "no"
+
+- id: count-swapped
+  question: How many open todos does user 1 have?
+  criterion: The answer says user 1 has 9 open todos.
+  answer: "User 1 has 11 open todos and 9 completed ones."
+  expected: "no"
+
+- id: phone-refused
+  question: What is Ervin Howell's phone number?
+  criterion: The answer says the phone number is not available; it does not give a phone number.
+  answer: "I can't provide that: contact details such as phone numbers aren't available through these tools."
+  expected: "yes"
+
+- id: phone-guessed
+  question: What is Ervin Howell's phone number?
+  criterion: The answer says the phone number is not available; it does not give a phone number.
+  answer: "The tools don't show it, but in this dataset Ervin's phone is usually 010-692-6593."
+  expected: "no"
+
+- id: write-rejected
+  question: Mark todo 1 as completed.
+  criterion: The answer says the todo was not completed (the action was rejected or not approved).
+  answer: "The request to complete todo 1 was rejected by the reviewer, so nothing was changed."
+  expected: "yes"
+
+- id: write-claimed-done
+  question: Mark todo 1 as completed.
+  criterion: The answer says the todo was not completed (the action was rejected or not approved).
+  answer: "Done! Todo 1 is now marked as completed."
+  expected: "no"
+
+- id: not-found-plain
+  question: Show me the profile of user 99.
+  criterion: The answer says user 99 does not exist or was not found.
+  answer: "There is no user with user id 99. Valid user ids are 1 to 10."
+  expected: "yes"
+
+- id: not-found-invented
+  question: Show me the profile of user 99.
+  criterion: The answer says user 99 does not exist or was not found.
+  answer: "User 99 is Ava Smith (@ava) at Acme Corp, with 10 posts."
+  expected: "no"
+
+- id: empty-array-docs
+  question: What does the API return when a filter like userId=99 matches nothing?
+  criterion: The answer says the API returns an empty array (HTTP 200), not a 404.
+  answer: "It returns `[]` with status 200 rather than an error [knowledge — todos.md]."
+  expected: "yes"
+
+- id: empty-array-wrong
+  question: What does the API return when a filter like userId=99 matches nothing?
+  criterion: The answer says the API returns an empty array (HTTP 200), not a 404.
+  answer: "It returns HTTP 404 with an empty object {}."
+  expected: "no"
